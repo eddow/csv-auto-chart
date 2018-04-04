@@ -1,6 +1,6 @@
 <template>
     <div class="p-4 flex flex-col">
-			<input type=file @change="processFile($event)" />
+			<input type=file @change="processFile($event)" accept=".csv" />
 			<form>
 				<table class="columns">
 					<thead>
