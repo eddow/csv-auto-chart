@@ -83,11 +83,14 @@ export default {
 			redraw() {
 				if(!this.axis.x) return;
 				if(!this.axis.left) return;
-				this.redrawTaucharts();
-				this.redrawPlottable();
+				//just ignore exceptions for now
+				try { this.redrawTaucharts(); } catch(x) {}
+				try { this.redrawPlottable(); } catch(x) {}
 			},
 			redrawPlottable() {
 				if(this.charts.plottable) this.charts.plottable.destroy();
+				delete this.charts.plottable;
+
 				var xDate = this.data[0][this.axis.x] instanceof Date;
 				var xScale = xDate?
 					new Plottable.Scales.Time() :
@@ -124,6 +127,7 @@ export default {
 			},
 			redrawTaucharts() {
 				if(this.charts.tau) this.charts.tau.destroy();
+				delete this.charts.tau;
 
 				this.charts.tau = new tauCharts.Chart({
 					data: this.data.filter(x=> !isNaN(+x[this.axis.left])),
