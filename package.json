@@ -6,13 +6,11 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "start": "node fuse"
   },
   "dependencies": {
     "d3": "^5.0.0",
     "jquery": "^3.3.1",
-    "vue": "^2.5.11",
     "vuex": "^3.0.1"
   },
   "browserslist": [
@@ -25,14 +23,20 @@
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.0",
     "babel-preset-stage-3": "^6.24.1",
-    "cross-env": "^5.0.5",
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.4",
-    "plottable": "^2.7.0",
+    "fuse-box": "^3.2.1",
+    "plottable": "^3.8.2",
+    "postcss-selector-parser": "^3.1.1",
     "taucharts": "^2.1.0",
+    "ts-loader": "^4.2.0",
+    "typescript": "^2.8.1",
+    "vue": "^2.5.16",
+    "vue-hot-reload-api": "^2.3.0",
     "vue-loader": "^13.0.5",
-    "vue-template-compiler": "^2.4.4",
-    "webpack": "^3.6.0",
-    "webpack-dev-server": "^2.9.1"
+    "vue-property-decorator": "^6.0.0",
+    "vue-router": "^3.0.1",
+    "vue-template-compiler": "^2.5.16",
+    "vue-template-es2015-compiler": "^1.6.0"
   }
 }
