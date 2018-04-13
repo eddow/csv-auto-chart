@@ -19,6 +19,13 @@
     "last 2 versions",
     "not ie <= 8"
   ],
+  "config": {
+    "semantic": {
+      "install": true,
+      "src": "./node_modules/semantic-ui/src/",
+      "config": "./src/less/semantic/theme.config"
+    }
+  },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
