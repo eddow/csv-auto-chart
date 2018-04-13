@@ -11,7 +11,6 @@ npm install
 ```
 ## Usage/test
 ``` bash
-# serve with hot reload at localhost:4444
-npm start
+# serve with hot reload at localhost:8080
+npm run dev
 ```
-Then, navigate to `http://localhost:4444`

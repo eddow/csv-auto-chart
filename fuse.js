@@ -1,4 +1,4 @@
-const {FuseBox, WebIndexPlugin, VueComponentPlugin, JSONPlugin, CSSResourcePlugin, CSSPlugin} = require("fuse-box");
+const {FuseBox, WebIndexPlugin, VueComponentPlugin, JSONPlugin, CSSPlugin} = require("fuse-box");
 
 const fuse = FuseBox.init({
     homeDir : "src",
@@ -11,15 +11,10 @@ const fuse = FuseBox.init({
 			}),
 			VueComponentPlugin(),
 			JSONPlugin(),
-			[
-				/node_modules.*\.css$/,
-				CSSResourcePlugin({/*
-					dist: "dist/resources",
-					resolve: (f) => `/resources/${f}`,
-					inline: false*/
-				}),
-				CSSPlugin()
-			]
+			CSSPlugin({
+				group: 'index.css',
+				outFile: 'dist/index.css'
+			})
     ],
 		shim: {
 				 jquery: {
@@ -29,7 +24,10 @@ const fuse = FuseBox.init({
 		}
 })
 
-fuse.dev();
+fuse.dev({
+	open : true,
+	port: 8080
+});
 fuse.bundle("vendor").instructions(" ~ index.ts");
 fuse.bundle("index").instructions(" !> [index.ts]").hmr().watch().sourceMaps(true);
 fuse.run();
