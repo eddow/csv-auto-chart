@@ -6,21 +6,27 @@ const fuse = FuseBox.init({
     output : "dist/$name.js",
     plugins : [
         WebIndexPlugin({
-			title: 'csv-auto-chart',
-			template: 'index.html'
-		}),
-		VueComponentPlugin(),
-		JSONPlugin(),
-		[
-			/node_modules.*\.css$/,
-			CSSResourcePlugin({/*
-				dist: "dist/resources",
-				resolve: (f) => `/resources/${f}`,
-				inline: false*/
+				title: 'csv-auto-chart',
+				template: 'index.html'
 			}),
-			CSSPlugin()
-		]
-    ]
+			VueComponentPlugin(),
+			JSONPlugin(),
+			[
+				/node_modules.*\.css$/,
+				CSSResourcePlugin({/*
+					dist: "dist/resources",
+					resolve: (f) => `/resources/${f}`,
+					inline: false*/
+				}),
+				CSSPlugin()
+			]
+    ],
+		shim: {
+				 jquery: {
+						 source: "node_modules/jquery/dist/jquery.js",
+						 exports: "$",
+				 },
+		}
 })
 
 fuse.dev();

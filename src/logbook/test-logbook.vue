@@ -35,20 +35,23 @@ export default class LogBookTest extends Vue {
 		delete this.chart;
 		
 		var xScale = new Plottable.Scales.Time().domain([dayTime('00:00'), dayTime('24:00')]);
-		var yScale = new Plottable.Scales.Linear().domain([0, 4]);
-		var yScaleTickGenerator = Plottable.Scales.TickGenerators.intervalTickGenerator(1);
-  		yScale.tickGenerator(yScaleTickGenerator);
+		//xScale.tickGenerator(()=> new Array(24).map((x,ndx)=> new Date(0, 0, 0, ndx)));
+		var displacement = 0.15;
+		var yScale = new Plottable.Scales.Linear().domain([displacement, 5-displacement]);
+		yScale.tickGenerator(()=> [1.5, 2.5, 3.5]);
 
 		var xAxis = new Plottable.Axes.Time(xScale, "top");
 		var yAxis = new Plottable.Axes.Numeric(yScale, "left");
+		var stateScale = new Plottable.Scales.Category().domain(stateNames);
+		var stateAxis = new Plottable.Axes.Category(stateScale, "left");
 		
 		var tiers = [];
 		var newConfigs = [];
-		tiers.push({
+		/*tiers.push({
 			formatter: Plottable.Formatters.time("%M"),
 			interval: Plottable.TimeInterval.minute,
 			step: 15
-		});
+		});*/
 		tiers.push({
 			formatter: Plottable.Formatters.time("%H"),
 			interval: Plottable.TimeInterval.hour,
@@ -68,14 +71,14 @@ export default class LogBookTest extends Vue {
 
 		var plot = new Plottable.Plots.Line();
 		plot.x(d=> dayTime(d.time), xScale);
-		plot.y(d=> 4.5-d.type, yScale);
+		plot.y(d=> 5-d.type, yScale);
 		plot.addDataset(dataset);
 		
 		var gridlines = new Plottable.Components.Gridlines(xScale, yScale);
-  		var group = new Plottable.Components.Group([plot, gridlines]);
+		var group = new Plottable.Components.Group([plot, gridlines]);
 		this.chart = new Plottable.Components.Table([
-			[yAxis, group],
-			[null, xAxis]
+			[null, xAxis],
+			[stateAxis, group]
 		]);
 		this.chart.renderTo("#logbook");
 	}

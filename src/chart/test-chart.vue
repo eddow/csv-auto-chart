@@ -1,13 +1,14 @@
 <template>
-    <div>
-			<input type=file @change="processFile($event)" accept=".csv" />
-			<form>
-				<table class="columns">
+    <div class="ui grid">
+			<form class="three wide column">
+				<input type=file @change="processFile($event)" accept=".csv" />
+				<table>
 					<thead>
 						<tr>
 							<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
 							<th>X</th>
 							<th>Y</th>
+							<th>&nbsp;</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -17,27 +18,23 @@
 								<input type="radio" name="xAxis" :value="title" v-model="axis.x" @change="redraw" />
 							</td>
 							<td>
-								<input type="radio" name="leftAxis" :value="title" v-model="axis.left" @change="redraw" />
+								<input type="checkbox" name="yAxis" :value="title" v-model="axis.y" @change="redraw" />
+							</td>
+							<td v-if="colors[title]" :style="{'background-color': colors[title]}">
+								&nbsp;
 							</td>
 						</tr>
 					</tbody>
 				</table>
-				<div id="chart"></div>
 			</form>
+			<div class="thirteen wide column">
+				<div id="chart"></div>
+			</div>
     </div>
 </template>
 <style>
-.columns {
-	width: 20%;
-	display: inline-table;
-}
 .columns td {
 	text-align: center;
-}
-#chart {
-	width: 70%;
-	height: 500px;
-	display: inline-block;
 }
 </style>
 <script lang="ts">
@@ -54,15 +51,22 @@ export default class ChartTest extends Vue {
 	columns: string[] = []
 	axis: any = {
 		x: null,
-		left: null,
-		right: null
+		y: []
 	}
 
 	redraw() {
 		if(!this.axis.x) return;
-		if(!this.axis.left) return;
+		if(!this.axis.y.length) return;
 		//just ignore exceptions for now
 		try { this.redrawPlottable(); } catch(x) {}
+	}
+	get colors(): {[key: string]: string} {
+		var rv = {};
+		var colorScale = new Plottable.Scales.Color();
+		for(let v of this.axis.y) {
+			rv[v] = colorScale.scale(v);
+		}
+		return rv;
 	}
 	redrawPlottable() {
 		if(this.chart) this.chart.destroy();
@@ -88,15 +92,22 @@ export default class ChartTest extends Vue {
 			(<Plottable.Axes.Time>xAxis).axisConfigurations(newConfigs);
 		}
 
-		var plot = new Plottable.Plots.Line();
-		plot.x(d=> d[this.axis.x], xScale);
-		plot.y(d=> d[this.axis.left], yScale);
+		var plots = new Plottable.Components.Group();
 
-		var dataset = new Plottable.Dataset(this.data);
-		plot.addDataset(dataset);
+		function plot(data, xAttr, yAttr, color) {
+			return new Plottable.Plots.Line()
+				.addDataset(new Plottable.Dataset(data))
+				.x(d=> d[xAttr], xScale)
+				.y(d=> d[yAttr], yScale)
+				.attr("stroke", color)
+				.attr("stroke-width", 1)
+		}
+		for(let y of this.axis.y) {
+			plots.append(plot(this.data, this.axis.x, y, this.colors[y]));
+		}
 
 		this.chart = new Plottable.Components.Table([
-			[yAxis, plot],
+			[yAxis, plots],
 			[null, xAxis]
 		]);
 

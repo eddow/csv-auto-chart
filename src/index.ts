@@ -1,4 +1,5 @@
 import 'plottable/plottable.css'
+import 'semantic-ui/dist/semantic.min.css'
 
 import testChart from './chart/test-chart.vue'
 import testLogbook from './logbook/test-logbook.vue'
