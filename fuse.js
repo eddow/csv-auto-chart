@@ -16,6 +16,9 @@ const fuse = FuseBox.init({
 				outFile: 'dist/index.css'
 			})
     ],
+    alias: {
+			"vue": "vue/dist/vue.esm.js",
+    },
 		shim: {
 				 jquery: {
 						 source: "node_modules/jquery/dist/jquery.js",
