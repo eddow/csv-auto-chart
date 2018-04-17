@@ -1,0 +1,10 @@
+{
+	"dev": {
+		"open" : true,
+		"port": 8080
+	},
+	"sourceMaps": {
+		"project": false,
+		"vendor": false
+	}
+}
