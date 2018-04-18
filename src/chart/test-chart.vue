@@ -40,8 +40,8 @@
 <script lang="ts">
 import {Component} from 'vue-property-decorator'
 import Vue from 'vue'
-import d3 from 'd3'
-import Plottable from 'plottable'
+import * as d3 from 'd3'
+import * as Plottable from 'plottable'
 
 @Component
 export default class ChartTest extends Vue {

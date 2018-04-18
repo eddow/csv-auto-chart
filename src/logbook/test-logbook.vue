@@ -10,8 +10,7 @@
 <script lang="ts">
 import {Component} from 'vue-property-decorator'
 import Vue from 'vue'
-import d3 from 'd3'
-import Plottable from 'plottable'
+import * as Plottable from 'plottable'
 import * as testData from './logbook.json'
 const stateNames = ['Off duty', 'Sleeper', 'Driving', 'On duty'];
 function dayTime(hhmm) {
