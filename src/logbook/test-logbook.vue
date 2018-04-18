@@ -12,6 +12,7 @@ import {Component} from 'vue-property-decorator'
 import Vue from 'vue'
 import * as Plottable from 'plottable'
 import * as testData from './logbook.json'
+import CaLines from '../components/ca-lines'
 const stateNames = ['Off duty', 'Sleeper', 'Driving', 'On duty'];
 function dayTime(hhmm) {
 	var hm = hhmm.split(':');
@@ -34,16 +35,13 @@ export default class LogBookTest extends Vue {
 		delete this.chart;
 		
 		var xScale = new Plottable.Scales.Time().domain([dayTime('00:00'), dayTime('24:00')]);
-		//xScale.tickGenerator(()=> new Array(24).map((x,ndx)=> new Date(0, 0, 0, ndx)));
-		var displacement = 0.15;
-		var yScale = new Plottable.Scales.Linear().domain([displacement, 5-displacement]);
-		yScale.tickGenerator(()=> [1.5, 2.5, 3.5]);
+		xScale.tickGenerator(()=> xScale.tickInterval('hour'));
+		var yScale = new Plottable.Scales.Linear().domain([0.5, 4.5]);
 		
 		var xAxis = new Plottable.Axes.Time(xScale, "top");
-		var yAxis = new Plottable.Axes.Numeric(yScale, "left");
 		var stateScale = new Plottable.Scales.Category().domain(stateNames);
 		var stateAxis = new Plottable.Axes.Category(stateScale, "left");
-		//stateScale.innerPadding(0).outerPadding(0);
+		stateScale.innerPadding(0).outerPadding(0);
 
 		var tiers = [];
 		var newConfigs = [];
@@ -69,7 +67,8 @@ export default class LogBookTest extends Vue {
 		plot.y(d=> 5-d.type, yScale);
 		plot.addDataset(dataset);
 		
-		var gridlines = new Plottable.Components.Gridlines(xScale, yScale);
+		var gridlines = new CaLines(xScale, stateScale);
+		gridlines.betweenY(true);
 		var group = new Plottable.Components.Group([plot, gridlines]);
 		this.chart = new Plottable.Components.Table([
 			[null, xAxis],
