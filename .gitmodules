@@ -1,0 +1,3 @@
+[submodule "src/plottable"]
+	path = src/plottable
+	url = https://github.com/palantir/plottable.git

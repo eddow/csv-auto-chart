@@ -39,19 +39,15 @@ export default class LogBookTest extends Vue {
 		var displacement = 0.15;
 		var yScale = new Plottable.Scales.Linear().domain([displacement, 5-displacement]);
 		yScale.tickGenerator(()=> [1.5, 2.5, 3.5]);
-
+		
 		var xAxis = new Plottable.Axes.Time(xScale, "top");
 		var yAxis = new Plottable.Axes.Numeric(yScale, "left");
 		var stateScale = new Plottable.Scales.Category().domain(stateNames);
 		var stateAxis = new Plottable.Axes.Category(stateScale, "left");
-		
+		//stateScale.innerPadding(0).outerPadding(0);
+
 		var tiers = [];
 		var newConfigs = [];
-		/*tiers.push({
-			formatter: Plottable.Formatters.time("%M"),
-			interval: Plottable.TimeInterval.minute,
-			step: 15
-		});*/
 		tiers.push({
 			formatter: Plottable.Formatters.time("%H"),
 			interval: Plottable.TimeInterval.hour,

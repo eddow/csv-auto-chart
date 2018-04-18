@@ -19,12 +19,15 @@ const fuse = FuseBox.init({
 	],
 	alias: {
 		"vue": "vue/dist/vue.esm.js",
-		"vue-router": "vue-router/dist/vue-router.esm.js"
+		"vue-router": "vue-router/dist/vue-router.esm.js",
+		"plottable": "~/plottable/src/",
+		"plottable_css": "~/plottable/plottable.css"
+		//"plottable_css": "plottable/plottable.css"
 	},
 	shim: {
 		jquery: {
 			source: "node_modules/jquery/dist/jquery.js",
-			exports: "$",
+			exports: "$"
 		},
 	},
 	sourceMaps: config.sourceMaps
