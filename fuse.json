@@ -6,5 +6,8 @@
 	"sourceMaps": {
 		"project": false,
 		"vendor": false
+	},
+	"debug": {
+		"plottable": false
 	}
 }
