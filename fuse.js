@@ -17,13 +17,16 @@ const fuse = FuseBox.init({
 			outFile: 'dist/index.css'
 		}*/)
 	],
-	alias: {
+	alias: Object.assign({
 		"vue": "vue/dist/vue.esm.js",
-		"vue-router": "vue-router/dist/vue-router.esm.js",
+		"vue-router": "vue-router/dist/vue-router.esm.js"
+	},
+	config.debug.plottable ? {
 		"plottable": "~/plottable/src/",
 		"plottable_css": "~/plottable/plottable.css"
-		//"plottable_css": "plottable/plottable.css"
-	},
+	} : {
+		"plottable_css": "plottable/plottable.css"
+	}),
 	shim: {
 		jquery: {
 			source: "node_modules/jquery/dist/jquery.js",

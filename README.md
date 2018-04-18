@@ -15,4 +15,9 @@ npm install
 npm run dev
 ```
 ### Fuse config
-`fuse.json` is untracked by git. If it really needs to be changed, [here is the how-to](https://stackoverflow.com/questions/9794931/keep-file-in-a-git-repo-but-dont-track-changes).
+In orde to change one's `fuse.json` without interferences, [here is the how-to](https://stackoverflow.com/questions/9794931/keep-file-in-a-git-repo-but-dont-track-changes).
+To change it at your convenience, use `git update-index --assume-unchanged fuse.json`
+#### Debug plottable
+In order to debug the plottable library,
+- Download the submodule code with `git submodule update --init`
+- Change in `fuse.json` the configuration `debug.plottable` to true
