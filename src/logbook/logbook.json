@@ -4,13 +4,21 @@
 		"time": "00:00"
 	}, {
 		"type": 4,
-		"time": "06:00"
+		"time": "06:00",
+		"note": {
+			"city": "Little Rock, AR",
+			"Remark" : 1
+		}
 	}, {
 		"type": 3,
 		"time": "06:15"
 	}, {
 		"type": 1,
-		"time": "11:00"
+		"time": "11:00",
+		"note": {
+			"city": "Dallas, TX",
+			"Remark" : 8
+		}
 	}, {
 		"type": 3,
 		"time": "12:00"
@@ -19,18 +27,30 @@
 		"time": "13:30"
 	}, {
 		"type": 1,
-		"time": "13:45"
+		"time": "13:45",
+		"note": {
+			"city": "Corsicana, TX",
+			"Remark" : 5
+		}
 	}, {
 		"type": 3,
 		"time": "14:45"
 	}, {
 		"type": 1,
-		"time": "17:00"
+		"time": "17:00",
+		"note": {
+			"city": "Houston, TX",
+			"Remark" : 7
+		}
 	}, {
 		"type": 3,
 		"time": "18:00"
 	}, {
 		"type": 2,
-		"time": "20:00"
+		"time": "20:00",
+		"note": {
+			"city": "Orange, TX",
+			"Remark" : 16
+		}
 	}]
 }

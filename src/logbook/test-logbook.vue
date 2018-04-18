@@ -4,7 +4,7 @@
 <style>
 #logbook {
 	width: 1000px;
-	height: 500px;
+	height: 200px;
 }
 </style>
 <script lang="ts">
@@ -12,7 +12,9 @@ import {Component} from 'vue-property-decorator'
 import Vue from 'vue'
 import * as Plottable from 'plottable'
 import * as testData from './logbook.json'
-import CaLines from '../components/ca-lines'
+import * as remarks from './remarks.json'
+import CaLines from '../ext/ca-lines'
+import NoteScale from '../ext/note-scale'
 const stateNames = ['Off duty', 'Sleeper', 'Driving', 'On duty'];
 function dayTime(hhmm) {
 	var hm = hhmm.split(':');
@@ -34,14 +36,18 @@ export default class LogBookTest extends Vue {
 		if(this.chart) this.chart.destroy();
 		delete this.chart;
 		
-		var xScale = new Plottable.Scales.Time().domain([dayTime('00:00'), dayTime('24:00')]);
-		xScale.tickGenerator(()=> xScale.tickInterval('hour'));
 		var yScale = new Plottable.Scales.Linear().domain([0.5, 4.5]);
 		
+		var xScale = new Plottable.Scales.Time().domain([dayTime('00:00'), dayTime('24:00')]);
+		xScale.tickGenerator(()=> xScale.tickInterval('hour'));
 		var xAxis = new Plottable.Axes.Time(xScale, "top");
+
 		var stateScale = new Plottable.Scales.Category().domain(stateNames);
 		var stateAxis = new Plottable.Axes.Category(stateScale, "left");
 		stateScale.innerPadding(0).outerPadding(0);
+
+		var noteScale = new NoteScale(xScale, x=> dayTime(x.time));
+		//TODO: noteAxis
 
 		var tiers = [];
 		var newConfigs = [];
