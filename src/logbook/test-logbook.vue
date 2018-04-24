@@ -46,8 +46,9 @@ export default class LogBookTest extends Vue {
 		var stateAxis = new Plottable.Axes.Category(stateScale, "left");
 		stateScale.innerPadding(0).outerPadding(0);
 
-		var noteScale = new NoteScale(xScale, x=> dayTime(x.time));
-		//TODO: noteAxis
+		var noScale = new Plottable.Scales.Linear();
+		/*var noteScale = new NoteScale(xScale, x=> dayTime(x.time));
+		//TODO: noteAxis*/
 
 		var tiers = [];
 		var newConfigs = [];
@@ -68,17 +69,23 @@ export default class LogBookTest extends Vue {
 		}
 		var dataset = new Plottable.Dataset(doubledData);
 
-		var plot = new Plottable.Plots.Line();
-		plot.x(d=> dayTime(d.time), xScale);
-		plot.y(d=> 5-d.type, yScale);
-		plot.addDataset(dataset);
+		var linePlot = new Plottable.Plots.Line();
+		linePlot.x(d=> dayTime(d.time), xScale);
+		linePlot.y(d=> 5-d.type, yScale);
+		linePlot.addDataset(dataset);
+
+		var legendPlot = new Plottable.Plots.Scatter();
+		legendPlot.x(d=> dayTime(d.time), xScale);
+		legendPlot.y(d=> 0, noScale);
+		legendPlot.addDataset(new Plottable.Dataset(this.data.states.filter(x=> !!x.note)));
 		
 		var gridlines = new CaLines(xScale, stateScale);
 		gridlines.betweenY(true);
-		var group = new Plottable.Components.Group([plot, gridlines]);
+		var group = new Plottable.Components.Group([linePlot, gridlines]);
 		this.chart = new Plottable.Components.Table([
 			[null, xAxis],
-			[stateAxis, group]
+			[stateAxis, group],
+			[null, legendPlot]
 		]);
 		this.chart.renderTo("#logbook");
 	}

@@ -83,13 +83,14 @@ export default class ChartTest extends Vue {
 		var yScale = new Plottable.Scales.Linear();
 		var yAxis = new Plottable.Axes.Numeric(yScale, "left");
 		if(xDate) {
-			var tiers = [];
+			/*var tiers = [];
 			var newConfigs = [];
 			tiers.push({ formatter: Plottable.Formatters.time("%Y"),
 					interval: Plottable.TimeInterval.year,
 					step: 1 });
 			newConfigs.push(tiers);
-			(<Plottable.Axes.Time>xAxis).axisConfigurations(newConfigs);
+			(<Plottable.Axes.Time>xAxis).axisConfigurations(newConfigs);*/
+			(<Plottable.Axes.Time>xAxis).annotationsEnabled(true);
 		}
 
 		var plots = new Plottable.Components.Group();
