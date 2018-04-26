@@ -81,24 +81,20 @@ export default class LogBookTest extends Vue {
 		legendPlot.y(d=> 0, noScale);
 		legendPlot.addDataset(new Plottable.Dataset(this.data.states.filter(x=> !!x.note)));
 		
-		var notes = [];
-		for(let h=0; h<24; ++h) {
-			let hh = n2(h);
-			for(let mm of ['00', '15', '30', '45'])
-				notes.push(`${hh}:${mm}`);
-		}
 		var annotated = {};
 		for(let d of this.data.states)
-			if(d.note)
-				annotated[d.time] = d.note;
-		var noteScale = new Plottable.Scales.Category().domain(notes);
-		var noteAxis = new NoteAxis(noteScale, "bottom");
-		noteScale.innerPadding(0).outerPadding(0);
+			if(d.note) {
+				var tParts = d.time.split(':'),
+				t = Math.round(+tParts[0]*4 + +tParts[1]/15);
+				annotated[t] = d.note;
+			}
+		var noteScale = new Plottable.Scales.Linear().domain([0, 24*4]);
+		var noteAxis = new Plottable.Axes.Numeric(noteScale, "bottom");
 		noteAxis.annotationsEnabled(true)
 			.formatter(()=> '')
 			.innerTickLength(0)
 			.endTickLength(0)
-			.annotatedTicks(Object.keys(annotated))
+			.annotatedTicks(Object.keys(annotated).map(x=> +x))
 			.annotationFormatter((n=> {
 				return annotated[n].city + '\n' + remarks[annotated[n].remark];
 			}));
@@ -109,8 +105,8 @@ export default class LogBookTest extends Vue {
 		this.chart = new Plottable.Components.Table([
 			[null, xAxis],
 			[stateAxis, group],
-			[null, noteAxis],
-			[null, legendPlot]
+			[null, noteAxis]/*,
+			[null, legendPlot]*/
 		]);
 		this.chart.renderTo("#logbook");
 	}
