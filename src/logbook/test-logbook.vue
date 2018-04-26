@@ -15,10 +15,14 @@ import * as testData from './logbook.json'
 import * as remarks from './remarks.json'
 import CaLines from '../ext/ca-lines'
 import NoteScale from '../ext/note-scale'
+import NoteAxis from '../ext/note-axis'
 const stateNames = ['Off duty', 'Sleeper', 'Driving', 'On duty'];
 function dayTime(hhmm) {
 	var hm = hhmm.split(':');
 	return new Date(0, 0, 0, +hm[0], +hm[1]);
+}
+function n2(n) {
+	return (n<10?'0':'')+n;
 }
 @Component
 export default class LogBookTest extends Vue {
@@ -42,7 +46,7 @@ export default class LogBookTest extends Vue {
 		xScale.tickGenerator(()=> xScale.tickInterval('hour'));
 		var xAxis = new Plottable.Axes.Time(xScale, "top");
 
-		var stateScale = new Plottable.Scales.Category().domain(stateNames);
+		var stateScale = new Plottable.Scales.Category().domain(stateNames.reverse());
 		var stateAxis = new Plottable.Axes.Category(stateScale, "left");
 		stateScale.innerPadding(0).outerPadding(0);
 
@@ -60,31 +64,52 @@ export default class LogBookTest extends Vue {
 		newConfigs.push(tiers);
 		xAxis.axisConfigurations(newConfigs);
 
-		var doubledData = [].concat(this.data.states);
-		for(let i=0; i<doubledData.length; i+=2) {
-			doubledData.splice(i+1, 0, {
-				type: doubledData[i].type,
-				time: i+1<doubledData.length ? doubledData[i+1].time : '24:00'
-			});
-		}
-		var dataset = new Plottable.Dataset(doubledData);
+		var dataset = new Plottable.Dataset([].concat(this.data.states).concat([{
+			"type": 2,
+			"time": "24:00"
+		}]));
 
 		var linePlot = new Plottable.Plots.Line();
-		linePlot.x(d=> dayTime(d.time), xScale);
-		linePlot.y(d=> 5-d.type, yScale);
-		linePlot.addDataset(dataset);
+		linePlot
+			.curve("stepAfter")
+			.x(d=> dayTime(d.time), xScale)
+			.y(d=> 5-d.type, yScale)
+			.addDataset(dataset);
 
 		var legendPlot = new Plottable.Plots.Scatter();
 		legendPlot.x(d=> dayTime(d.time), xScale);
 		legendPlot.y(d=> 0, noScale);
 		legendPlot.addDataset(new Plottable.Dataset(this.data.states.filter(x=> !!x.note)));
 		
+		var notes = [];
+		for(let h=0; h<24; ++h) {
+			let hh = n2(h);
+			for(let mm of ['00', '15', '30', '45'])
+				notes.push(`${hh}:${mm}`);
+		}
+		var annotated = {};
+		for(let d of this.data.states)
+			if(d.note)
+				annotated[d.time] = d.note;
+		var noteScale = new Plottable.Scales.Category().domain(notes);
+		var noteAxis = new NoteAxis(noteScale, "bottom");
+		noteScale.innerPadding(0).outerPadding(0);
+		noteAxis.annotationsEnabled(true)
+			.formatter(()=> '')
+			.innerTickLength(0)
+			.endTickLength(0)
+			.annotatedTicks(Object.keys(annotated))
+			.annotationFormatter((n=> {
+				return annotated[n].city + '\n' + remarks[annotated[n].remark];
+			}));
+
 		var gridlines = new CaLines(xScale, stateScale);
 		gridlines.betweenY(true);
 		var group = new Plottable.Components.Group([linePlot, gridlines]);
 		this.chart = new Plottable.Components.Table([
 			[null, xAxis],
 			[stateAxis, group],
+			[null, noteAxis],
 			[null, legendPlot]
 		]);
 		this.chart.renderTo("#logbook");

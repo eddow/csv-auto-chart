@@ -65,15 +65,10 @@ function dot(a1: any[], a2: any[]): any[] {
 }
 	
 export default class CaLines extends Components.Gridlines {
-	//Ugly but gridlines was not written to be extended
-	private __xScale: Scale<any, any> | null;
-	private __yScale: Scale<any, any> | null;
 	private _caLinesContainer: SimpleSelection<void>;
 	
 	constructor(xScale: Scale<any, any> | null, yScale: Scale<any, any> | null) {
 		super(xScale, yScale);
-		this.__xScale = xScale;
-		this.__yScale = yScale;
 	}
 	protected _setup() {
 		super._setup();
@@ -81,31 +76,33 @@ export default class CaLines extends Components.Gridlines {
 	}
 	public renderImmediately() {
 		super.renderImmediately();
-		if (this.__xScale && this.__yScale) {
-			const xTicks = this.__xScale.ticks().slice(1);
-			const yTicks = this.__yScale.ticks();
+		const _xScale = (<any>this)._xScale;
+		const _yScale = (<any>this)._yScale;
+		if (_xScale && _yScale) {
+			const xTicks = _xScale.ticks().slice(1);
+			const yTicks = _yScale.ticks();
 			const caTicks = dot(xTicks, yTicks);
 			const caLinesUpdate = this._caLinesContainer.selectAll("line").data(caTicks);
 			const caLines = caLinesUpdate.enter();
 			caLines.append("line").merge(caLinesUpdate)
-				.attr("x1", gridPositionFactory(this.__xScale, .5, 'x', this.__xScale.ticks()))
-				.attr("y1", gridPositionFactory(this.__yScale, false, 'y', this.__yScale.ticks(), 0))
-				.attr("x2", gridPositionFactory(this.__xScale, .5, 'x', this.__xScale.ticks()))
-				.attr("y2", gridPositionFactory(this.__yScale, false, 'y', this.__yScale.ticks(), .5))
+				.attr("x1", gridPositionFactory(_xScale, .5, 'x', _xScale.ticks()))
+				.attr("y1", gridPositionFactory(_yScale, false, 'y', _yScale.ticks(), -.2))
+				.attr("x2", gridPositionFactory(_xScale, .5, 'x', _xScale.ticks()))
+				.attr("y2", gridPositionFactory(_yScale, false, 'y', _yScale.ticks(), .5))
 				.classed("zeroline", (t: number) => t === 0);
 
 			caLines.append("line").merge(caLinesUpdate)
-				.attr("x1", gridPositionFactory(this.__xScale, .25, 'x', this.__xScale.ticks()))
-				.attr("y1", gridPositionFactory(this.__yScale, false, 'y', this.__yScale.ticks(), .25))
-				.attr("x2", gridPositionFactory(this.__xScale, .25, 'x', this.__xScale.ticks()))
-				.attr("y2", gridPositionFactory(this.__yScale, false, 'y', this.__yScale.ticks(), .5))
+				.attr("x1", gridPositionFactory(_xScale, .25, 'x', _xScale.ticks()))
+				.attr("y1", gridPositionFactory(_yScale, false, 'y', _yScale.ticks(), .3))
+				.attr("x2", gridPositionFactory(_xScale, .25, 'x', _xScale.ticks()))
+				.attr("y2", gridPositionFactory(_yScale, false, 'y', _yScale.ticks(), .5))
 				.classed("zeroline", (t: number) => t === 0);
 
 			caLines.append("line").merge(caLinesUpdate)
-				.attr("x1", gridPositionFactory(this.__xScale, .75, 'x', this.__xScale.ticks()))
-				.attr("y1", gridPositionFactory(this.__yScale, false, 'y', this.__yScale.ticks(), .25))
-				.attr("x2", gridPositionFactory(this.__xScale, .75, 'x', this.__xScale.ticks()))
-				.attr("y2", gridPositionFactory(this.__yScale, false, 'y', this.__yScale.ticks(), .5))
+				.attr("x1", gridPositionFactory(_xScale, .75, 'x', _xScale.ticks()))
+				.attr("y1", gridPositionFactory(_yScale, false, 'y', _yScale.ticks(), .3))
+				.attr("x2", gridPositionFactory(_xScale, .75, 'x', _xScale.ticks()))
+				.attr("y2", gridPositionFactory(_yScale, false, 'y', _yScale.ticks(), .5))
 				.classed("zeroline", (t: number) => t === 0);
 			caLinesUpdate.exit().remove();
 			
