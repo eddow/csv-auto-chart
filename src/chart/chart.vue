@@ -20,24 +20,10 @@ export default class ChartTest extends Vue {
 	@Watch('data', {deep: true})
 	@Watch('xAxis')
 	@Watch('yAxes', {deep: true})
-	//@Watch('colors', {deep: true})
+	@Watch('colors', {deep: true})
 	redraw() {
 		if(!this.xAxis) return;
 		if(!this.yAxes.length) return;
-		this.redrawPlottable();
-	}
-	
-	/*@Watch('yAxes', {deep: true})
-	getColors() {
-		var colors = this.colors;
-		for(let i of Object.keys(colors))
-			delete colors[i];
-		var colorScale = new Plottable.Scales.Color();
-		for(let v of this.yAxes)
-			colors[v] = colorScale.scale(v);
-	}*/
-
-	redrawPlottable() {
 		if(this.chart) this.chart.destroy();
 		delete this.chart;
 
