@@ -93,14 +93,14 @@ export default class CaLines extends Components.Gridlines {
 
 			caLines.append("line").merge(caLinesUpdate)
 				.attr("x1", gridPositionFactory(_xScale, .25, 'x', _xScale.ticks()))
-				.attr("y1", gridPositionFactory(_yScale, false, 'y', _yScale.ticks(), .3))
+				.attr("y1", gridPositionFactory(_yScale, false, 'y', _yScale.ticks(), .2))
 				.attr("x2", gridPositionFactory(_xScale, .25, 'x', _xScale.ticks()))
 				.attr("y2", gridPositionFactory(_yScale, false, 'y', _yScale.ticks(), .5))
 				.classed("zeroline", (t: number) => t === 0);
 
 			caLines.append("line").merge(caLinesUpdate)
 				.attr("x1", gridPositionFactory(_xScale, .75, 'x', _xScale.ticks()))
-				.attr("y1", gridPositionFactory(_yScale, false, 'y', _yScale.ticks(), .3))
+				.attr("y1", gridPositionFactory(_yScale, false, 'y', _yScale.ticks(), .2))
 				.attr("x2", gridPositionFactory(_xScale, .75, 'x', _xScale.ticks()))
 				.attr("y2", gridPositionFactory(_yScale, false, 'y', _yScale.ticks(), .5))
 				.classed("zeroline", (t: number) => t === 0);
