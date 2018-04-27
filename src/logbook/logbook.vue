@@ -20,6 +20,7 @@ function pixelise(size: number|string) {
 @Component
 export default class LogBook extends Vue {
 	chart: Plottable.Components.Table
+	
 	mounted() {
 		this.redraw();
 	}
@@ -31,6 +32,7 @@ export default class LogBook extends Vue {
 		if(this.chart) this.chart.destroy();
 		delete this.chart;
 		
+		//No category scale on the vertical axis
 		var yScale = new Plottable.Scales.Linear().domain([0.5, 4.5]);
 		
 		var xScale = new Plottable.Scales.Time().domain([dayTime('00:00'), dayTime('24:00')]);
@@ -64,9 +66,8 @@ export default class LogBook extends Vue {
 
 		var annotated = {}
 		for(let d of this.data.states)
-			if(d.note) {
+			if(d.note)
 				annotated[+dayTime(d.time)] = d.note;
-			}
 			
 		btmAxis.annotationsEnabled(true)
 			.annotatedTicks(Object.keys(annotated).map(x=> new Date(+x)))

@@ -37,23 +37,20 @@ export default class ChartTest extends Vue {
 			new Plottable.Axes.Numeric(<Plottable.Scales.Linear>xScale, "bottom");
 		var yScale = new Plottable.Scales.Linear();
 		var yAxis = new Plottable.Axes.Numeric(yScale, "left");
-		if(xDate) {
-			(<Plottable.Axes.Time>xAxis).annotationsEnabled(true);
-		}
+		if(xDate) (<Plottable.Axes.Time>xAxis).annotationsEnabled(true);
 
 		var plots = new Plottable.Components.Group();
-
-		function plot(data, xAttr, yAttr, color) {
+		var dataset = new Plottable.Dataset(this.data);
+		function plot(xAttr, yAttr, color) {
 			return new Plottable.Plots.Line()
-				.addDataset(new Plottable.Dataset(data))
+				.addDataset(dataset)
 				.x(d=> d[xAttr], xScale)
 				.y(d=> d[yAttr], yScale)
 				.attr("stroke", color)
 				.attr("stroke-width", 1)
 		}
-		for(let y of this.yAxes) {
-			plots.append(plot(this.data, this.xAxis, y, this.colors[y]));
-		}
+		for(let y of this.yAxes)
+			plots.append(plot(this.xAxis, y, this.colors[y]));
 
 		this.chart = new Plottable.Components.Table([
 			[yAxis, plots],
