@@ -4,6 +4,7 @@ window.__VERSION__ = 'tested';
 
 import 'plottable_css'
 import 'semantic-ui/dist/semantic.min.css'
+import 'd3-selection-multi'
 
 import testChart from './chart/test-chart.vue'
 import testLogbook from './logbook/test-logbook.vue'

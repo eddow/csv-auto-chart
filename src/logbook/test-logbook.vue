@@ -3,7 +3,7 @@
 </template>
 <style>
 #logbook {
-	width: 1000px;
+	width: 800px;
 	height: 200px;
 }
 </style>
@@ -14,6 +14,7 @@ import * as Plottable from 'plottable'
 import * as testData from './logbook.json'
 import * as remarks from './remarks.json'
 import CaLines from '../ext/ca-lines'
+import AnnotedAxis from '../ext/annoted'
 const stateNames = ['On duty', 'Driving', 'Sleeper', 'Off duty'];
 function dayTime(hhmm) {
 	var hm = hhmm.split(':');
@@ -41,7 +42,7 @@ export default class LogBookTest extends Vue {
 		var xScale = new Plottable.Scales.Time().domain([dayTime('00:00'), dayTime('24:00')]);
 		xScale.tickGenerator(()=> xScale.tickInterval('hour'));
 		var topAxis = new Plottable.Axes.Time(xScale, "top");
-		var btmAxis = new Plottable.Axes.Time(xScale, "bottom");
+		var btmAxis = new AnnotedAxis(xScale, "bottom");
 
 		var stateScale = new Plottable.Scales.Category().domain(stateNames);
 		var stateAxis = new Plottable.Axes.Category(stateScale, "left");
