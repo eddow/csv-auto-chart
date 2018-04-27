@@ -71,7 +71,7 @@ export default class ChartTest extends Vue {
 			reader.onload = function (evt) {
 				var data = d3.csvParse((<any>evt.target).result),
 					parseTime = d3.timeParse('%m/%e/%Y');
-				me.data = data//.slice(0, 200)
+				me.data = data
 					.map((x: any)=> {
 						for(let i in x)
 							if('string'=== typeof x[i]) {

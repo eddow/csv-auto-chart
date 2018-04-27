@@ -9,7 +9,7 @@ export default class AnnotedAxis extends Axes.Time {
 	 */
 	public annotationShearAngle(): number;
 	/**
-	 * Sets the tick label shear angle in degrees.
+	 * Sets the annotation shear angle in degrees.
 	 * Only angles between -80 and 80 are supported.
 	 *
 	 * @param {number} angle
@@ -69,10 +69,8 @@ export default class AnnotedAxis extends Axes.Time {
 		const offsetF = (d: Date) => {
 			switch (this.orientation()) {
 				case "bottom":
-				//case "right":
 					return axisHeightWithoutMarginAndAnnotations;
 				case "top":
-				//case "left":
 					return axisHeight - axisHeightWithoutMarginAndAnnotations;
 			}
 		};
@@ -85,15 +83,11 @@ export default class AnnotedAxis extends Axes.Time {
 		let secondaryPosition: number;
 		switch (this.orientation()) {
 			case "bottom":
-			//case "right":
 				secondaryPosition = 0;
 				break;
 			case "top":
 				secondaryPosition = this.height();
 				break;
-			/*case "left":
-				secondaryPosition = this.width();
-				break;*/
 		}
 		const lineOffset = (d)=> offsetF(d) + measurements.get(d).height/2;
 		const isHorizontal = this.isHorizontal();
@@ -125,10 +119,8 @@ export default class AnnotedAxis extends Axes.Time {
 		const rectangleOffsetF = (d: Date) => {
 			switch (this.orientation()) {
 				case "bottom":
-				//case "right":
 					return offsetF(d);
 				case "top":
-				//case "left":
 					return offsetF(d) - measurements.get(d).height;
 			}
 		};
