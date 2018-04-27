@@ -28,10 +28,6 @@ export default class LogBook extends Vue {
 	@Prop({required: true}) data: any
 
 	redraw() {
-		//just ignore exceptions for now
-		try { this.redrawPlottable(); } catch(x) { console.error(x.stack); }
-	}
-	redrawPlottable() {
 		if(this.chart) this.chart.destroy();
 		delete this.chart;
 		
@@ -71,7 +67,7 @@ export default class LogBook extends Vue {
 			if(d.note) {
 				annotated[+dayTime(d.time)] = d.note;
 			}
-		//TODO: colliding annotations are hidden
+			
 		btmAxis.annotationsEnabled(true)
 			.annotatedTicks(Object.keys(annotated).map(x=> new Date(+x)))
 			.annotationFormatter((n=> {
