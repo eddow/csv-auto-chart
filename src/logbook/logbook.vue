@@ -1,18 +1,10 @@
 <template>
-	<div id="logbook"></div>
+	<div ref="logbook"></div>
 </template>
-<style>
-#logbook {
-	width: 800px;
-	height: 200px;
-}
-</style>
 <script lang="ts">
-import {Component} from 'vue-property-decorator'
+import {Component, Prop} from 'vue-property-decorator'
 import Vue from 'vue'
 import * as Plottable from 'plottable'
-import * as testData from './logbook.json'
-import * as remarks from './remarks.json'
 import CaLines from '../ext/ca-lines'
 import AnnotedAxis from '../ext/annoted'
 const stateNames = ['On duty', 'Driving', 'Sleeper', 'Off duty'];
@@ -21,13 +13,19 @@ function dayTime(hhmm) {
 	return new Date(0, 0, 0, +hm[0], +hm[1]);
 }
 
+function pixelise(size: number|string) {
+	return 'number'=== typeof size ? size + 'px' : size;
+}
+
 @Component
-export default class LogBookTest extends Vue {
+export default class LogBook extends Vue {
 	chart: Plottable.Components.Table
-	data: any = testData
 	mounted() {
 		this.redraw();
 	}
+
+	@Prop({required: true}) remarks: string[]
+	@Prop({required: true}) data: any
 
 	redraw() {
 		//just ignore exceptions for now
@@ -78,7 +76,7 @@ export default class LogBookTest extends Vue {
 			.annotatedTicks(Object.keys(annotated).map(x=> new Date(+x)))
 			.annotationFormatter((n=> {
 				let note = annotated[+n];
-				return note.city + '\n' + remarks[note.remark];
+				return note.city + '\n' + this.remarks[note.remark];
 			}));
 
 		var gridlines = new CaLines(xScale, stateScale);
@@ -89,7 +87,7 @@ export default class LogBookTest extends Vue {
 			[stateAxis, group],
 			[null, btmAxis]
 		]);
-		this.chart.renderTo("#logbook");
+		this.chart.renderTo(<HTMLElement>this.$refs.logbook);
 	}
 }
 </script>

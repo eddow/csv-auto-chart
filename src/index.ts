@@ -6,8 +6,8 @@ import 'plottable_css'
 import 'semantic-ui/dist/semantic.min.css'
 import 'd3-selection-multi'
 
-import testChart from './chart/test-chart.vue'
-import testLogbook from './logbook/test-logbook.vue'
+import testChart from './test-chart/test-chart.vue'
+import testLogbook from './test-logbook/test-logbook.vue'
 
 const routes = [
 	{ path: '/chart', component: testChart },
