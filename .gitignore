@@ -5,6 +5,7 @@ npm-debug.log
 yarn-error.log
 package-lock.json
 .fusebox
+launch.json
 
 # Editor directories and files
 .idea
